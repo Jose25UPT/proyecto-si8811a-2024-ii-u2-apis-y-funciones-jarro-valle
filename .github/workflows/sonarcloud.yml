@@ -50,7 +50,13 @@ jobs:
             /o:"jose25upt" `
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
-            /d:sonar.exclusions="**/*Tests.csproj"
-          dotnet build "path/to/solution.sln"
+            /d:sonar.exclusions="**/*Tests.csproj" `
+            /d:sonar.scanner.skipJreProvisioning=true `
+            /d:sonar.scanner.scanAll=false
+
+          # Build the project
+          dotnet build "path/to/solution.sln" /t:Rebuild
+
+          # End the SonarQube analysis
           .\.sonar\scanner\dotnet-sonarscanner end `
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
