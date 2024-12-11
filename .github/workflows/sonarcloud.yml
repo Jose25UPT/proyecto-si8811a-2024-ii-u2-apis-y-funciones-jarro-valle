@@ -52,6 +52,7 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.exclusions="**/*Tests.csproj"
+            /d:sonar.scanner.scanAll=false
 
           # Construye la solución en la raíz
           dotnet build "proyecto-si8811a-2024-ii-u1-apis-y-funciones-jarro-y-valle.sln" /t:Rebuild
