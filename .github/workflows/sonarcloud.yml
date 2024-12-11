@@ -26,7 +26,7 @@ jobs:
       - name: Cache SonarQube Cloud Packages
         uses: actions/cache@v4
         with:
-          path: ~\sonar\cache
+          path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
@@ -34,7 +34,7 @@ jobs:
         id: cache-sonar-scanner
         uses: actions/cache@v4
         with:
-          path: .\.sonar\scanner
+          path: .sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
@@ -42,9 +42,11 @@ jobs:
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
+          if (!(Test-Path -Path ".sonar/scanner")) {
+            New-Item -Path ".sonar/scanner" -ItemType Directory
+          }
           dotnet tool install --global dotnet-sonarscanner
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+          dotnet tool update dotnet-sonarscanner --tool-path .sonar/scanner
 
       - name: Build and Analyze
         env:
@@ -52,6 +54,16 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Jose25UPT_proyecto-si8811a-2024-ii-u2-apis-y-funciones-jarro-valle" /o:"jose25upt" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/*valleTests.csproj"
-          dotnet build
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin `
+            /k:"Jose25UPT_proyecto-si8811a-2024-ii-u2-apis-y-funciones-jarro-valle" `
+            /o:"jose25upt" `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.exclusions="**/*valleTests.csproj" `
+            /d:sonar.scanner.skipJreProvisioning=true
+
+          dotnet build --no-incremental
+
+          .\.sonar\scanner\dotnet-sonarscanner end `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
