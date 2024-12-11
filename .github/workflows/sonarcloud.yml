@@ -45,18 +45,22 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
+          # Cambiar al directorio del proyecto si es necesario
+          cd path\to\solution # Cambia esto si tu archivo .sln está en un subdirectorio
+
+          # Paso de inicio de SonarQube
           .\.sonar\scanner\dotnet-sonarscanner begin `
             /k:"Jose25UPT_proyecto-si8811a-2024-ii-u2-apis-y-funciones-jarro-valle" `
             /o:"jose25upt" `
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.exclusions="**/*Tests.csproj" `
-            /d:sonar.scanner.skipJreProvisioning=true `
-            /d:sonar.scanner.scanAll=false
+            /d:sonar.scanner.scanAll=false `
+            /d:sonar.scanner.skipJreProvisioning=true
 
-          # Build the project
-          dotnet build "path/to/solution.sln" /t:Rebuild
+          # Compilación del proyecto
+          dotnet build "proyecto-si8811a-2024-ii-u1-apis-y-funciones-jarro-y-valle.sln" /t:Rebuild
 
-          # End the SonarQube analysis
+          # Paso final de SonarQube
           .\.sonar\scanner\dotnet-sonarscanner end `
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
