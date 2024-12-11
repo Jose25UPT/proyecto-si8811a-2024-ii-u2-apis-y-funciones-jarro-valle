@@ -9,17 +9,17 @@
     <DockerfileContext>.</DockerfileContext>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>Eventos-JV</PackageId>
-	<IsPackable>true</IsPackable>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Cors" Version="5.3.0" />
+    <PackageReference Include="Microsoft.AspNet.Cors" Version="5.4.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.28.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-	<None Include="docs\README.md" Pack="true" PackagePath="\"/>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <None Include="docs\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
